@@ -1,0 +1,75 @@
+import pygame
+import os
+
+# Initialize pygame mixer and pygame itself
+pygame.mixer.init()
+pygame.init()
+
+# List of tracks (Ensure these files exist in the same directory or provide absolute paths)
+tracks = [
+    "track1.mp3",
+    "track2.mp3",
+    "track3.mp3"
+]
+
+current_track = 0
+is_playing = False
+
+# Function to play the current track
+def play_music():
+    global is_playing
+    pygame.mixer.music.load(tracks[current_track])
+    pygame.mixer.music.play()
+    is_playing = True
+
+# Function to stop music
+def stop_music():
+    global is_playing
+    pygame.mixer.music.stop()
+    is_playing = False
+
+# Function to pause/resume
+def toggle_play_pause():
+    global is_playing
+    if pygame.mixer.music.get_busy():
+        pygame.mixer.music.pause()
+        is_playing = False
+    else:
+        pygame.mixer.music.unpause()
+        is_playing = True
+
+# Function to play next track
+def next_track():
+    global current_track
+    current_track = (current_track + 1) % len(tracks)
+    play_music()
+
+# Function to play previous track
+def prev_track():
+    global current_track
+    current_track = (current_track - 1) % len(tracks)
+    play_music()
+
+# Create a simple Pygame window
+screen = pygame.display.set_mode((400, 300))
+pygame.display.set_caption("Music Player")
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                toggle_play_pause()
+            elif event.key == pygame.K_RIGHT:
+                next_track()
+            elif event.key == pygame.K_LEFT:
+                prev_track()
+            elif event.key == pygame.K_s:
+                stop_music()
+
+    screen.fill((30, 30, 30))
+    pygame.display.flip()
+
+pygame.quit()
