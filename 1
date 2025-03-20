@@ -1,0 +1,57 @@
+import pygame
+import time
+import math
+
+
+pygame.init()
+
+
+WIDTH, HEIGHT = 400, 400
+CENTER = (WIDTH // 2, HEIGHT // 2)
+BACKGROUND_COLOR = (255, 255, 255)
+
+
+mickey_face = pygame.image.load("clock.png")  # Provide a proper Mickey Mouse face image
+right_hand = pygame.image.load("arrow1.png")  # Right hand for minutes
+left_hand = pygame.image.load("arrow2.png")  # Left hand for seconds
+
+
+mickey_face = pygame.transform.scale(mickey_face, (WIDTH, HEIGHT))
+
+
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("eye Clock")
+
+
+def blit_rotate(image, angle, length):
+    rotated_image = pygame.transform.rotate(image, angle)
+    rect = rotated_image.get_rect(center=(CENTER[0], CENTER[1] - length))
+    screen.blit(rotated_image, rect.topleft)
+
+
+running = True
+while running:
+    screen.fill(BACKGROUND_COLOR)
+    screen.blit(mickey_face, (0, 0))
+    
+
+    current_time = time.localtime()
+    minutes = current_time.tm_min
+    seconds = current_time.tm_sec
+    
+
+    minutes_angle = -90 + (minutes * 6)
+    seconds_angle = -90 + (seconds * 6)
+
+    blit_rotate(right_hand, -minutes_angle, 80)  # Right hand (minutes)
+    blit_rotate(left_hand, -seconds_angle, 100)  # Left hand (seconds)
+    
+    pygame.display.flip()
+    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    pygame.time.delay(1000)  # Update every second
+
+pygame.quit()
