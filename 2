@@ -1,11 +1,10 @@
 import pygame
 import os
 
-# Initialize pygame mixer and pygame itself
 pygame.mixer.init()
 pygame.init()
 
-# List of tracks (Ensure these files exist in the same directory or provide absolute paths)
+
 tracks = [
     "track1.mp3",
     "track2.mp3",
@@ -15,20 +14,20 @@ tracks = [
 current_track = 0
 is_playing = False
 
-# Function to play the current track
+
 def play_music():
     global is_playing
     pygame.mixer.music.load(tracks[current_track])
     pygame.mixer.music.play()
     is_playing = True
 
-# Function to stop music
+
 def stop_music():
     global is_playing
     pygame.mixer.music.stop()
     is_playing = False
 
-# Function to pause/resume
+
 def toggle_play_pause():
     global is_playing
     if pygame.mixer.music.get_busy():
@@ -38,19 +37,19 @@ def toggle_play_pause():
         pygame.mixer.music.unpause()
         is_playing = True
 
-# Function to play next track
+
 def next_track():
     global current_track
     current_track = (current_track + 1) % len(tracks)
     play_music()
 
-# Function to play previous track
+
 def prev_track():
     global current_track
     current_track = (current_track - 1) % len(tracks)
     play_music()
 
-# Create a simple Pygame window
+
 screen = pygame.display.set_mode((400, 300))
 pygame.display.set_caption("Music Player")
 
